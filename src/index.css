@@ -334,6 +334,19 @@ code {
   box-shadow: var(--erp-shadow);
 }
 
+.erp-metric-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.erp-info-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
 .erp-metric-label {
   display: block;
   margin-bottom: 6px;
@@ -348,6 +361,80 @@ code {
   font-size: 1.05rem;
   color: var(--erp-text);
   letter-spacing: -0.03em;
+}
+
+.erp-info-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(24, 49, 83, 0.12);
+  color: var(--erp-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: help;
+}
+
+.erp-tooltip-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: 240px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #0f172a;
+  color: #e2e8f0;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.erp-info-wrap:hover .erp-tooltip-panel,
+.erp-info-wrap:focus-within .erp-tooltip-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.erp-tooltip-title {
+  font-weight: 800;
+  font-size: 0.78rem;
+  margin-bottom: 4px;
+}
+
+.erp-tooltip-copy {
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: rgba(226, 232, 240, 0.78);
+  margin-bottom: 10px;
+}
+
+.erp-tooltip-list {
+  display: grid;
+  gap: 6px;
+}
+
+.erp-tooltip-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.72rem;
+}
+
+.erp-tooltip-empty {
+  font-size: 0.72rem;
+  color: rgba(226, 232, 240, 0.75);
 }
 
 .erp-table-card {
