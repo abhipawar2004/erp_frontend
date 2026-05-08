@@ -2,69 +2,119 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Link
+  NavLink,
+  useLocation
 } from 'react-router-dom';
 
 import Products from './pages/Products';
 import Orders from './pages/Orders';
 
-function App() {
+const navigationItems = [
+  {
+    to: '/',
+    label: 'Products',
+    description: 'Catalog and stock'
+  },
+  {
+    to: '/orders',
+    label: 'Orders',
+    description: 'Fulfillment pipeline'
+  }
+];
+
+function AppLayout() {
+  const location = useLocation();
+
+  const currentPage =
+    navigationItems.find((item) => item.to === location.pathname) ||
+    navigationItems[0];
 
   return (
+    <div className="erp-shell">
+      <aside className="erp-sidebar">
+        <div>
+          <div className="erp-brand">
+            <div className="erp-brand-mark">
+              ER
+            </div>
 
-    <BrowserRouter>
+            <div>
+              <div className="erp-brand-title">
+                ERP Control
+              </div>
 
-      <div className="d-flex">
-
-        {/* Sidebar */}
-
-        <div
-          style={{
-            width: '240px',
-            minHeight: '100vh',
-            background: '#111827',
-            padding: '20px'
-          }}
-        >
-
-          <h2
-            className="text-white mb-5"
-          >
-            ERP Dashboard
-          </h2>
-
-          <div className="d-grid gap-3">
-
-            <Link
-              to="/"
-              className="btn btn-light"
-            >
-              Products
-            </Link>
-
-            <Link
-              to="/orders"
-              className="btn btn-light"
-            >
-              Orders
-            </Link>
-
+              <div className="erp-brand-subtitle">
+                Operations dashboard
+              </div>
+            </div>
           </div>
 
+          <div className="erp-sidebar-section-label">
+            Navigation
+          </div>
+
+          <nav className="erp-nav">
+            {navigationItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `erp-nav-link ${isActive ? 'active' : ''}`
+                }
+                end={item.to === '/'}
+              >
+                <span className="erp-nav-link-title">
+                  {item.label}
+                </span>
+
+                <span className="erp-nav-link-description">
+                  {item.description}
+                </span>
+              </NavLink>
+            ))}
+          </nav>
         </div>
 
-        {/* Main Content */}
+        <div className="erp-sidebar-footer">
+          <div className="erp-status-dot" />
 
-        <div
-          className="flex-grow-1 p-4"
-          style={{
-            background: '#f3f4f6',
-            minHeight: '100vh'
-          }}
-        >
+          <div>
+            <div className="erp-sidebar-footer-title">
+              Live sync active
+            </div>
 
+            <div className="erp-sidebar-footer-subtitle">
+              Backend connected
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main className="erp-main">
+        <header className="erp-topbar">
+          <div>
+            <div className="erp-page-kicker">
+              {currentPage.description}
+            </div>
+
+            <h1 className="erp-page-title">
+              {currentPage.label}
+            </h1>
+          </div>
+
+          <div className="erp-topbar-actions">
+            <div className="erp-search-pill">
+              Operations overview
+            </div>
+
+            <div className="erp-user-chip">
+              Admin
+            </div>
+          </div>
+        </header>
+
+        <div className="erp-content">
           <Routes>
-
             <Route
               path="/"
               element={<Products />}
@@ -74,13 +124,19 @@ function App() {
               path="/orders"
               element={<Orders />}
             />
-
           </Routes>
-
         </div>
+      </main>
+    </div>
+  );
+}
 
-      </div>
+function App() {
 
+  return (
+
+    <BrowserRouter>
+      <AppLayout />
     </BrowserRouter>
 
   );
