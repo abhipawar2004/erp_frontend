@@ -64,6 +64,27 @@ function Orders() {
 
     async function createOrder() {
         try {
+            // Validation: Check if all items are selected and have valid quantities
+            for (let item of items) {
+                if (!item.product_id || !item.quantity) {
+                    alert('Please select a product and enter quantity for all items');
+                    return;
+                }
+
+                // Check if product has stock available
+                const selectedProduct = products.find((p) => p.id === parseInt(item.product_id));
+                if (!selectedProduct || selectedProduct.stock === 0) {
+                    alert(`Product is out of stock`);
+                    return;
+                }
+
+                // Check if requested quantity is available
+                if (parseInt(item.quantity) > parseInt(selectedProduct.stock)) {
+                    alert(`Insufficient stock for ${selectedProduct.name}. Available: ${selectedProduct.stock}`);
+                    return;
+                }
+            }
+
             await axios.post('http://127.0.0.1:8000/api/orders', {
                 order_items: items.map((item) => ({
                     product_id: parseInt(item.product_id),
@@ -286,7 +307,7 @@ function Orders() {
                                         <option value="">Select Product</option>
 
                                         {products
-                                            .filter((p) => p.is_active)
+                                            .filter((p) => p.is_active && parseInt(p.stock) > 0)
                                             .map((product) => (
                                                 <option key={product.id} value={product.id}>
                                                     {product.name} (Stock: {product.stock})
